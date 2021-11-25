@@ -1,0 +1,36 @@
+﻿@using WkeInnuvaDeveloperSummit.Wke
+
+@model AccountModel
+@{
+    ViewData["Title"] = "Home Page";
+    var companyCorrelationId = ViewBag.companyCorrelationId;
+}
+
+<div class="text-center">
+    
+    <h1 class="display-4">cuenta contable</h1>
+    <hr />
+
+    <div>
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Code)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Code)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </dl>
+    </div>
+    <div style="text-align: left;">
+        <a asp-action="Edit" asp-route-companyCorrelationId="@companyCorrelationId" asp-route-accountCorrelationId="@Model.Id">Editar</a>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+
+</div>

@@ -35,6 +35,25 @@ namespace WkeInnuvaDeveloperSummit.Controllers
 
         }
 
+        // GET: AccountsController/Details/5
+        public async Task<IActionResult> Details(string companyCorrelationId, string accountCorrelationId)
+        {
+            using (var client = this.CreateHttpClient(companyCorrelationId))
+            {
+                var accountsUrl = $"{this.wkeDeveloperPortalConfiguration.AccountingEndPoint}api/accounts/{accountCorrelationId}";
+                var accountsRequest = await client.GetAsync(accountsUrl);
+
+                accountsRequest.EnsureSuccessStatusCode();
+
+                var result = await accountsRequest.Content.ReadAsStringAsync();
+                var accounts = JsonConvert.DeserializeObject<AccountModel>(result);
+
+                ViewBag.CompanyCorrelationId = companyCorrelationId;
+
+                return View(accounts);
+            }
+        }
+
         // POST: AccountsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
