@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace WkeInnuvaDeveloperSummit.Controllers
 {
@@ -30,6 +31,27 @@ namespace WkeInnuvaDeveloperSummit.Controllers
                 ViewBag.CompanyCorrelationId = companyCorrelationId;
 
                 return View(accounts);
+            }
+
+        }
+
+        // POST: AccountsController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("CorrelationId,Code,Description")] CreateAccountCommand createAccountCommand, string companyCorrelationId)
+        {
+
+            using (var client = this.CreateHttpClient(companyCorrelationId))
+            {
+                var accountsUrl = $"{this.wkeDeveloperPortalConfiguration.AccountingEndPoint}api/accounts";
+                var json = JsonConvert.SerializeObject(createAccountCommand);
+                var command = new StringContent(json, Encoding.UTF8, "application/json");
+                var createAccountRequest = await client.PostAsync(accountsUrl, command);
+
+                ViewBag.CompanyCorrelationId = companyCorrelationId;
+
+                return RedirectToAction("Index", new { companyCorrelationId = companyCorrelationId });
+
             }
 
         }
