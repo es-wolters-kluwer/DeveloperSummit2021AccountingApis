@@ -1,8 +1,45 @@
-﻿@{
+﻿@using WkeInnuvaDeveloperSummit.Wke
+
+@model List<CompanyModel>
+@{
     ViewData["Title"] = "Home Page";
 }
 
+
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Lista de empresas</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    Vat number
+                </td>
+                <td style="text-align: left;">
+                    Vat name
+                </td>
+                <td>
+                    options
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.VatNumber
+                </td>
+                <td style="text-align: left;">
+                    @item.VatName
+                </td>
+                <td>
+                    @Html.ActionLink("Cuentas", "Index", "Accounts", new { Area = "", companyCorrelationId = item.CorrelationId })
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
 </div>
