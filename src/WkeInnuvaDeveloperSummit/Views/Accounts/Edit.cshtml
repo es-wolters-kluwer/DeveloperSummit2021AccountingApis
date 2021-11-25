@@ -1,0 +1,46 @@
+﻿@using WkeInnuvaDeveloperSummit.Wke
+
+@model AccountModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var companyCorrelationId = ViewBag.CompanyCorrelationId;
+}
+
+<h1>Editar</h1>
+<h4>Cuenta contable</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <input type="hidden" name="CompanyCorrelationId" value="@companyCorrelationId"/>
+            <input type="hidden" asp-for="CorrelationId" value="@Model.CorrelationId"/>
+            <input type="hidden" asp-for="Code" value="@Model.Code"/>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                @Html.DisplayFor(m => m.Code)
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />&nbsp;
+                <a asp-action="Index" asp-route-companyCorrelationId="@companyCorrelationId" class="btn btn-default">Volver</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

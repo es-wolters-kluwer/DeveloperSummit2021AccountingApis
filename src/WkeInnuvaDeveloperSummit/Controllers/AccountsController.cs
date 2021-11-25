@@ -75,5 +75,43 @@ namespace WkeInnuvaDeveloperSummit.Controllers
 
         }
 
+        // GET: AccountsController/Edit/5
+        public async Task<IActionResult> Edit(string companyCorrelationId, string accountCorrelationId)
+        {
+            using (var client = this.CreateHttpClient(companyCorrelationId))
+            {
+                var accountsUrl = $"{this.wkeDeveloperPortalConfiguration.AccountingEndPoint}api/accounts/{accountCorrelationId}";
+                var accountsRequest = await client.GetAsync(accountsUrl);
+
+                accountsRequest.EnsureSuccessStatusCode();
+
+                var result = await accountsRequest.Content.ReadAsStringAsync();
+                var accounts = JsonConvert.DeserializeObject<AccountModel>(result);
+
+                ViewBag.CompanyCorrelationId = companyCorrelationId;
+
+                return View(accounts);
+            }
+        }
+
+        // POST: AccountsController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([Bind("CorrelationId,Code,Description")] ModifyAccountCommand modifyAccountCommand, string companyCorrelationId)
+        {
+            using (var client = this.CreateHttpClient(companyCorrelationId))
+            {
+                var accountsUrl = $"{this.wkeDeveloperPortalConfiguration.AccountingEndPoint}api/accounts";
+                var json = JsonConvert.SerializeObject(modifyAccountCommand);
+                var command = new StringContent(json, Encoding.UTF8, "application/json");
+                var modifyAccountRequest = await client.PutAsync(accountsUrl, command);
+
+                ViewBag.CompanyCorrelationId = companyCorrelationId;
+
+                return RedirectToAction("Index", new { companyCorrelationId = companyCorrelationId });
+
+            }
+        }
+
     }
 }
