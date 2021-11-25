@@ -1,0 +1,60 @@
+﻿@using WkeInnuvaDeveloperSummit.Wke
+
+@model List<AccountModel>
+@{
+    ViewData["Title"] = "Home Page";
+    var companyCorrelationId = ViewBag.companyCorrelationId;
+}
+
+<div class="text-center">
+    
+    <h1 class="display-4">Lista de cuentas</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    Vat number
+                </td>
+                <td style="text-align: left;">
+                    Vat name
+                </td>
+                <td>
+                    options
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Code
+                </td>
+                <td style="text-align: left;">
+                    @item.Description
+                </td>
+                <td>
+                    @if (item.IsTemplate)
+                    {
+                        <form asp-action="Create">
+                            <input type="hidden" name="CompanyCorrelationId" value="@companyCorrelationId">
+                            <input type="hidden" name="CorrelationId" value="@item.Id">
+                            <input type="hidden" name="Code" value="@item.Code">
+                            <input type="hidden" name="Description" value="@item.Description">
+                            <input type="submit" value="Crear" class="btn" />
+                        </form> 
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Ver", "Details", "Accounts", new { Area = "", companyCorrelationId = companyCorrelationId, accountCorrelationId = item.Id }, new { @class = "btn" })
+                        @Html.ActionLink("Editar", "Edit", "Accounts", new { Area = "", companyCorrelationId = companyCorrelationId, accountCorrelationId = item.Id }, new { @class = "btn" })
+                    }
+                        
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</div>
