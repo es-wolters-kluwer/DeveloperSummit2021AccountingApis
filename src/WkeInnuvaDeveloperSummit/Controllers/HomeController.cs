@@ -6,11 +6,14 @@ using WkeInnuvaDeveloperSummit.Models;
 namespace WkeInnuvaDeveloperSummit.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : WkeBaseController
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            IConfiguration configuration,
+            ILogger<HomeController> logger)
+            : base(configuration)
         {
             _logger = logger;
         }
