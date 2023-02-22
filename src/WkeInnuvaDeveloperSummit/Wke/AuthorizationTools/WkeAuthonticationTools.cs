@@ -44,7 +44,8 @@ namespace WkeInnuvaDeveloperSummit.Wke
                 ClientId = clientId,
                 ClientSecret = clientSecret,
                 Address = discoveryDocument.TokenEndpoint,
-                Code = context.ProtocolMessage.Code
+                Code = context.ProtocolMessage.Code,
+                ClientCredentialStyle = ClientCredentialStyle.PostBody
             };
 
             var response = await httpClient.RequestAuthorizationCodeTokenAsync(authRequest).ConfigureAwait(true);
